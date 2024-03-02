@@ -10,7 +10,7 @@ class Generator(IGenerator):
         self.seed = seed
 
     def _gen(self):
-        input_path = Path(f"./in/{self.seed:04}.txt")
+        input_path = Path(f"./src/tools/ahc002/in/{self.seed:04}.txt")
         s = ""
         with open(input_path, "r") as f:
             for line in f:
