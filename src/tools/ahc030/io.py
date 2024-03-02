@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
+from ..interface.io import IInput, IOutput
 
-class Query(BaseModel):
+
+class Query(IOutput):
     n: int
     points: list[int]
 
@@ -20,7 +22,7 @@ class Query(BaseModel):
         return Query(n, points)
 
 
-class Answer(BaseModel):
+class Answer(IOutput):
     n: int
     points: list[int]
 
@@ -47,7 +49,7 @@ class Output(BaseModel):
         return s
 
 
-class Input(BaseModel):
+class Input(IInput):
     N: int
     M: int
     eps: float
