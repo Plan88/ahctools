@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY ./src ./
 COPY pyproject.toml ./
+COPY ./in ./
 
 RUN apt-get -y update \
     && /usr/local/bin/python -m pip install --upgrade pip \
@@ -13,4 +14,4 @@ RUN apt-get -y update \
 
 EXPOSE 8080
 
-CMD ["python", "app.py"]
+CMD ["python", "src/app.py"]

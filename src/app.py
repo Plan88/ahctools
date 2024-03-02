@@ -1,9 +1,9 @@
 import dash_auth
 from dash import Dash, Input, Output, callback, dcc, html
 
-from tools.generator import gen_input
-from tools.solver import solve
-from tools.visualizer import get_visualizer
+from tools.ahc002.generator import gen_input
+from tools.ahc002.io import Output as Output2
+from tools.ahc002.visualizer import get_visualizer
 
 app = Dash(__name__)
 
@@ -19,16 +19,7 @@ def get_parameter_div() -> html.Div:
     return html.Div(
         [
             "Seed:",
-            dcc.Input(type="number", min=0, value=0, id="seed"),
-            " N:",
-            dcc.Input(type="number", min=10, value=10, id="N"),
-            " M:",
-            dcc.Input(type="number", min=2, value=2, id="M"),
-            " eps:",
-            dcc.Input(
-                type="number", min=0.01, max=0.2, step=0.01, value=0.01, id="eps"
-            ),
-            dcc.Checklist(["fix N", "fix M", "fix eps"], id="fix", value=[]),
+            dcc.Input(type="number", min=0, max=99, value=0, id="seed"),
         ]
     )
 
@@ -74,40 +65,25 @@ app.layout = html.Div(
 
 
 @callback(
-    Output("N", "disabled"),
-    Output("M", "disabled"),
-    Output("eps", "disabled"),
-    Input("fix", "value"),
-)
-def fix_input(value):
-    updated = ["fix N" not in value, "fix M" not in value, "fix eps" not in value]
-    return updated
-
-
-@callback(
     Output("input", "value"),
-    Output("output", "value"),
     Output("graph", "figure"),
     Input("seed", "value"),
-    Input("N", "value"),
-    Input("M", "value"),
-    Input("eps", "value"),
-    Input("fix", "value"),
+    Input("output", "value"),
 )
-def print_input(seed: int, N: int, M: int, eps: float, fix_flags: list[bool]):
-    fN, fM, feps = "fix N" in fix_flags, "fix M" in fix_flags, "fix eps" in fix_flags
+def visualize(seed: int, output: str):
+    input = gen_input(seed=seed)
+    if output is None:
+        output = ""
+    output = Output2.from_str(output)
 
-    if not fN:
-        N = None
-    if not fM:
-        M = None
-    if not feps:
-        eps = None
+    try:
+        fig = get_visualizer(input=input, output=output)
+    except Exception as e:
+        print(e)
+        import plotly.graph_objects as go
 
-    input = gen_input(seed, N, M, eps)
-    output = solve(input)
-    fig = get_visualizer(input, output)
-    return str(input), str(output), fig
+        fig = go.Figure()
+    return str(input), fig
 
 
 if __name__ == "__main__":
