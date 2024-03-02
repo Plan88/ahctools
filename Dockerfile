@@ -2,7 +2,7 @@ FROM --platform=linux/amd64 python:3.11-slim
 
 WORKDIR /app
 
-COPY ./src ./
+COPY ./src ./src
 COPY pyproject.toml ./
 
 RUN apt-get -y update \
@@ -13,4 +13,4 @@ RUN apt-get -y update \
 
 EXPOSE 8080
 
-CMD ["python", "app.py"]
+CMD ["python", "src/app.py"]
