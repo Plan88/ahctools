@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from .io import IInput, IOutput
 
 
-class Evaluator(metaclass=ABCMeta):
+class IEvaluator(metaclass=ABCMeta):
     def __init__(self, input: IInput):
         self.input = input
 
