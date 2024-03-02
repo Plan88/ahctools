@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY ./src ./src
 COPY pyproject.toml ./
+COPY ./in ./in
 
 RUN apt-get -y update \
     && /usr/local/bin/python -m pip install --upgrade pip \

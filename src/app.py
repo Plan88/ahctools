@@ -1,6 +1,6 @@
 from dash import Dash
 
-from tools.ahc030.compornents import get_compornent
+from tools.ahc002.compornents import get_compornent
 
 app = Dash(__name__)
 app.layout = get_compornent
