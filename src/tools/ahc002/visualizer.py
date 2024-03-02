@@ -71,7 +71,6 @@ def get_visualizer(input: Input, output: Output) -> go.Figure:
         fillcolor="red",
         opacity=0.5,
     )
-    print("finish add")
 
     fig.update_layout(
         height=1200,
