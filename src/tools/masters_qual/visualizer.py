@@ -113,6 +113,7 @@ def add_path(fig: go.Figure, path: list[tuple[int, int]], color: str) -> go.Figu
             x=[path[0][1] + ox],
             y=[path[0][0] + oy],
             marker=dict(color=color, size=5),
+            hoverinfo="skip",
         )
     )
 
@@ -124,6 +125,7 @@ def add_path(fig: go.Figure, path: list[tuple[int, int]], color: str) -> go.Figu
             y=x,
             mode="lines",
             line=dict(width=1, color=color),
+            hoverinfo="skip",
         )
     )
 
