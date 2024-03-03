@@ -70,6 +70,28 @@ class Output(IOutput):
             actions.append((s, d, e))
         return Output(pi=pi, pj=pj, qi=qi, qj=qj, actions=actions)
 
+    def get_taka_path(self) -> list[tuple[int, int]]:
+        d = [c for _, c, _ in self.actions]
+        return self.get_path(self.pi, self.pj, d)
+
+    def get_aoki_path(self) -> list[tuple[int, int]]:
+        d = [c for _, _, c in self.actions]
+        return self.get_path(self.qi, self.qj, d)
+
+    def get_path(self, x: int, y: int, d: list[str]) -> list[tuple[int, int]]:
+        path = [(x, y)]
+        for c in d:
+            if c == "L":
+                y -= 1
+            elif c == "R":
+                y += 1
+            elif c == "U":
+                x -= 1
+            elif c == "D":
+                x += 1
+            path.append((x, y))
+        return path
+
     def get_grid(self, input: Input) -> list[list[int]]:
         a = input.a.copy()
 
