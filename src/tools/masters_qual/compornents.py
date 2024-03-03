@@ -23,7 +23,7 @@ def get_input_textarea_div() -> html.Div:
             html.P("Input:"),
             dcc.Textarea(
                 placeholder="input",
-                readOnly=True,
+                # readOnly=True,
                 id="input",
                 style={"width": "50%", "height": 200},
             ),
@@ -42,12 +42,12 @@ def get_output_textarea_div() -> html.Div:
     )
 
 
-def get_input_graph() -> dcc.Loading:
-    return dcc.Loading(dcc.Graph(id="graph"), type="cube")
+def get_graph(id: str = "graph") -> dcc.Loading:
+    return dcc.Loading(dcc.Graph(id=id), type="cube")
 
 
 def get_output_graph() -> dcc.Loading:
-    return dcc.Loading(dcc.Graph(id="output_graph"), type="cube")
+    return dcc.Loading(dcc.Graph(id=id), type="cube")
 
 
 def get_compornent() -> html.Div:
@@ -57,8 +57,8 @@ def get_compornent() -> html.Div:
             get_parameter_div(),
             get_input_textarea_div(),
             get_output_textarea_div(),
-            get_input_graph(),
-            get_output_graph(),
+            get_graph(),
+            get_graph(id="graph2"),
         ]
     )
 

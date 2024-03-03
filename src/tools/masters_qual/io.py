@@ -49,7 +49,53 @@ class Input(IInput):
 
 
 class Output(IOutput):
-    s: str
+    pi: int
+    pj: int
+    qi: int
+    qj: int
+    actions: list[tuple[str, str, str]]
 
     def from_str(s: str) -> "Output":
-        return Output(s=s)
+        lines = s.split("\n")
+        pi, pj, qi, qj = map(int, lines[0].split())
+
+        actions = []
+        for line in lines:
+            if line == "":
+                continue
+
+            s, d, e = line.split()
+            s = int(s)
+
+            actions.append((s, d, e))
+        return Output(pi=pi, pj=pj, qi=qi, qj=qj, actions=actions)
+
+    def get_grid(self, input: Input) -> list[list[int]]:
+        a = input.a.copy()
+
+        x1, y1, x2, y2 = self.pi, self.pj, self.qi, self.qj
+        for action in self.actions:
+            s, d, e = action
+
+            if s == 1:
+                a[x1][y1], a[x2][y2] = a[x2][y2], a[x1][y1]
+
+            if d == "L":
+                y1 -= 1
+            elif d == "R":
+                y1 += 1
+            elif d == "U":
+                x1 -= 1
+            elif d == "D":
+                x1 += 1
+
+            if e == "L":
+                y2 -= 1
+            elif e == "R":
+                y2 += 1
+            elif e == "U":
+                x2 -= 1
+            elif e == "D":
+                x2 += 1
+
+        return a
