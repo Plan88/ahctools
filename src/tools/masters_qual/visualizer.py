@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
 
+from .evaluator import Evaluator, evaluate_grid
 from .io import Input, Output
 
 
@@ -97,6 +98,9 @@ def get_input_visualizer(input: Input) -> go.Figure:
 
     fig = add_grid(fig, input)
     fig = update_layout(fig, input.N)
+
+    score = evaluate_grid(input, input.a)
+    fig.update_layout(title=dict(text=f"{score=}"))
     return fig
 
 
@@ -108,4 +112,6 @@ def get_output_visualizer(input: Input, a: list[list[int]]) -> go.Figure:
 
     fig = add_grid(fig, input)
     fig = update_layout(fig, input.N)
+    score = evaluate_grid(input, a)
+    fig.update_layout(title=dict(text=f"{score=}"))
     return fig
