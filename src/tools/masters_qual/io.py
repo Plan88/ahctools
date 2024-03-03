@@ -1,40 +1,49 @@
 from ..interface.io import IInput, IOutput
-from .domain import Tile, TileType
 
 
 class Input(IInput):
-    si: int
-    sj: int
-    t: list[list[int]]
-    p: list[list[int]]
+    t: int
+    N: int
+    v: list[list[int]]
+    h: list[list[int]]
+    a: list[list[int]]
 
     def from_str(s: str) -> "Input":
         lines = s.split("\n")
 
-        si, sj = map(int, lines[0].split())
+        t, N = map(int, lines[0].split())
 
-        t = []
-        for i in range(1, 51):
-            t.append(list(map(int, lines[i].split())))
+        vl, vr = 1, N + 1
+        hl, hr = vr, vr + N - 1
+        al, ar = hr, hr + N
 
-        p = []
-        for i in range(51, 101):
-            p.append(list(map(int, lines[i].split())))
+        v = []
+        for i in range(vl, vr):
+            v.append(list(map(int, lines[i])))
 
-        return Input(si=si, sj=sj, t=t, p=p)
+        h = []
+        for i in range(hl, hr):
+            h.append(list(map(int, lines[i])))
+
+        a = []
+        for i in range(al, ar):
+            a.append(list(map(int, lines[i].split())))
+        return Input(t=t, N=N, v=v, h=h, a=a)
 
     def __str__(self) -> str:
         s = ""
-        s += f"{self.si} {self.sj}\n"
+        s += f"{self.t} {self.N}\n"
 
-        def to_str_line(t: list[int]) -> str:
+        def to_str_line(t: list[int], delimiter: str = " ") -> str:
             t_str = map(str, t)
-            return " ".join(t_str) + "\n"
+            return delimiter.join(t_str) + "\n"
 
-        for ti in self.t:
-            s += to_str_line(ti)
-        for pi in self.p:
-            s += to_str_line(pi)
+        for vi in self.v:
+            s += to_str_line(vi, "")
+        for hi in self.h:
+            s += to_str_line(hi, "")
+        for ai in self.a:
+            s += to_str_line(ai)
 
         return s
 
@@ -44,38 +53,3 @@ class Output(IOutput):
 
     def from_str(s: str) -> "Output":
         return Output(s=s)
-
-
-def get_tile_infos(input: Input) -> list[Tile]:
-    N = 50
-    M = N * N
-
-    used = [False] * M
-    tiles = [None] * M
-
-    for i in range(N):
-        for j in range(N):
-            tij = input.t[i][j]
-            if used[tij]:
-                continue
-
-            used[tij] = True
-
-            score = input.p[i][j]
-            tile_type = TileType.one
-
-            if i < N - 1 and input.t[i + 1][j] == tij:
-                used[input.t[i + 1][j]] = True
-                score = (score, input.p[i + 1][j])
-                tile_type = TileType.tate
-            elif j < N - 1 and input.t[i][j + 1] == tij:
-                used[input.t[i][j + 1]] = True
-                score = (score, input.p[i][j + 1])
-                tile_type = TileType.yoko
-
-            tiles[tij] = Tile(tile_type=tile_type, score=score, pos=(i, j))
-
-    while tiles[-1] is None:
-        tiles.pop()
-
-    return tiles
