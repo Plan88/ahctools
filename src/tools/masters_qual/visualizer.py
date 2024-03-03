@@ -102,16 +102,22 @@ def get_input_visualizer(input: Input) -> go.Figure:
 
 
 def add_path(fig: go.Figure, path: list[tuple[int, int]], color: str) -> go.Figure:
+    ox = 1 / 3
+    oy = 2 / 3
+    if color == "blue":
+        ox = 2 / 3
+        oy = 1 / 3
+
     fig.add_trace(
         go.Scatter(
-            x=[path[0][1] + 0.5],
-            y=[path[0][0] + 0.5],
+            x=[path[0][1] + ox],
+            y=[path[0][0] + oy],
             marker=dict(color=color, size=5),
         )
     )
 
-    x = [xi + 0.5 for xi, _ in path]
-    y = [yi + 0.5 for _, yi in path]
+    x = [xi + oy for xi, _ in path]
+    y = [yi + ox for _, yi in path]
     fig.add_trace(
         go.Scatter(
             x=y,
