@@ -6,7 +6,7 @@ from .visualizer import get_visualizer
 
 
 def get_title() -> html.H1:
-    return html.H1("Visualizer")
+    return html.H1("Visualizer for masters-qual")
 
 
 def get_parameter_div() -> html.Div:
