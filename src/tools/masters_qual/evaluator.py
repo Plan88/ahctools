@@ -9,8 +9,8 @@ class Evaluator(IEvaluator):
         D = evaluate_grid(self.input, self.input.a)
         D2 = evaluate_grid(self.input, output.get_grid(self.input))
 
-        score = max(1.0, round(1_000_000 * math.log2(D2 / D)))
-        return score
+        score = max(1.0, round(1_000_000 * math.log2(D / D2)))
+        return score, math.log2(D / D2), D / D2
 
 
 def evaluate_grid(input: Input, a: list[list[int]]) -> int:

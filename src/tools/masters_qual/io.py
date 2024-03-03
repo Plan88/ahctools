@@ -53,14 +53,14 @@ class Output(IOutput):
     pj: int
     qi: int
     qj: int
-    actions: list[tuple[str, str, str]]
+    actions: list[tuple[int, str, str]]
 
     def from_str(s: str) -> "Output":
         lines = s.split("\n")
         pi, pj, qi, qj = map(int, lines[0].split())
 
         actions = []
-        for line in lines:
+        for line in lines[1:]:
             if line == "":
                 continue
 

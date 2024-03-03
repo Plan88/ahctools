@@ -104,7 +104,8 @@ def get_input_visualizer(input: Input) -> go.Figure:
     return fig
 
 
-def get_output_visualizer(input: Input, a: list[list[int]]) -> go.Figure:
+def get_output_visualizer(input: Input, output: Output) -> go.Figure:
+    a = output.get_grid(input)
     fig = go.Figure()
 
     fig = add_wall(fig, input)
