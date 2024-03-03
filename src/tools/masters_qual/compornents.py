@@ -1,7 +1,8 @@
-from dash import Input, Output, callback, dcc, html
+from dash import Input, Output, State, callback, dcc, html
 
 from .generator import gen_input
-from .visualizer import get_input_visualizer
+from .io import Input as Input2
+from .visualizer import get_input_visualizer, get_output_visualizer
 
 
 def get_title() -> html.H1:
@@ -23,7 +24,7 @@ def get_input_textarea_div() -> html.Div:
             html.P("Input:"),
             dcc.Textarea(
                 placeholder="input",
-                # readOnly=True,
+                readOnly=True,
                 id="input",
                 style={"width": "50%", "height": 200},
             ),
@@ -43,10 +44,6 @@ def get_output_textarea_div() -> html.Div:
 
 
 def get_graph(id: str = "graph") -> dcc.Loading:
-    return dcc.Loading(dcc.Graph(id=id), type="cube")
-
-
-def get_output_graph() -> dcc.Loading:
     return dcc.Loading(dcc.Graph(id=id), type="cube")
 
 
@@ -81,12 +78,19 @@ def visualize_input(seed: int):
     return str(input), fig
 
 
-# @callback(
-#     Output("output_graph", "figure"),
-#     Input("output", "value"),
-# )
-# def visualize_output(output: str):
-#     import plotly.graph_objects as go
+@callback(
+    Output("graph2", "figure"),
+    Input("output", "value"),
+    State("input", "value"),
+)
+def visualize_output(output: str, input: str):
+    input = Input2.from_str(input)
 
-#     fig = go.Figure()
-#     return fig
+    a = []
+    for ai in output.split("\n"):
+        if ai == "":
+            continue
+        a.append(list(map(int, ai.split())))
+
+    fig = get_output_visualizer(input, a)
+    return fig
