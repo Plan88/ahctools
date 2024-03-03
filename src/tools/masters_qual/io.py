@@ -74,7 +74,7 @@ class Output(IOutput):
         a = input.a.copy()
 
         x1, y1, x2, y2 = self.pi, self.pj, self.qi, self.qj
-        for action in self.actions:
+        for i, action in enumerate(self.actions):
             s, d, e = action
 
             if s == 1:
@@ -98,4 +98,14 @@ class Output(IOutput):
             elif e == "D":
                 x2 += 1
 
+            if (
+                not (0 <= x1 < input.N)
+                or not (0 <= x2 <= input.N)
+                or not (0 <= y1 <= input.N)
+                or not (0 <= y2 < input.N)
+            ):
+                print(len(self.actions))
+                raise Exception(
+                    f"Out of Grid, tern {i+1}, pi={x1}, pj={y1}, qi={y1}, qj={y2}"
+                )
         return a

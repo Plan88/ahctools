@@ -6,11 +6,13 @@ from .io import Input, Output
 
 class Evaluator(IEvaluator):
     def evaluate(self, output: Output) -> float:
-        D = evaluate_grid(self.input, self.input.a)
-        D2 = evaluate_grid(self.input, output.get_grid(self.input))
+        D_dash = evaluate_grid(self.input, self.input.a)
+        D = evaluate_grid(self.input, output.get_grid(self.input))
 
-        score = max(1.0, round(1_000_000 * math.log2(D / D2)))
-        return score, math.log2(D / D2), D / D2
+        rate = D / D_dash
+        log = math.log2(rate)
+        score = max(1.0, round(1_000_000 * log))
+        return score, log, rate
 
 
 def evaluate_grid(input: Input, a: list[list[int]]) -> int:

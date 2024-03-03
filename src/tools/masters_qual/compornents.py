@@ -100,9 +100,15 @@ def visualize_input(seed: int):
     State("input", "value"),
 )
 def visualize_output(output: str, input: str):
-    input = Input2.from_str(input)
-    output = Output2.from_str(output)
+    try:
+        input = Input2.from_str(input)
+        output = Output2.from_str(output)
 
-    fig = get_output_visualizer(input, output)
-    score, log, rate = Evaluator(input).evaluate(output)
+        fig = get_output_visualizer(input, output)
+        score, log, rate = Evaluator(input).evaluate(output)
+    except Exception as e:
+        print(e)
+        import plotly.graph_objects as go
+
+        return go.Figure(), "Score = 0.0", "log2(D'/D) = 0.0", "D'/D = 0.0"
     return fig, f"Score = {score}", f"log2(D'/D) = {log}", f"D'/D = {rate}"
