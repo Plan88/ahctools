@@ -51,7 +51,7 @@ nalgebra = "0.32.3"
 alga = "0.9.3"
 libm = "0.2.7"
 rand = "0.8.5"
-getrandom = "0.2.10"
+getrandom = { version = "0.2", features = ["js"] }
 rand_chacha = "0.3.1"
 rand_core = "0.6.4"
 rand_hc = "0.3.2"
