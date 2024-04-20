@@ -15,11 +15,11 @@ export function gen(seed: number): string;
 */
 export function vis(input: string, output: string, turn: number): Ret;
 /**
-* @param {string} input
+* @param {string} _input
 * @param {string} output
 * @returns {number}
 */
-export function get_max_turn(input: string, output: string): number;
+export function get_max_turn(_input: string, output: string): number;
 /**
 */
 export class Ret {

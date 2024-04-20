@@ -1,9 +1,6 @@
-use itertools::Itertools;
-use rand::{seq::SliceRandom, Rng, RngCore};
+use rand::{seq::SliceRandom, Rng};
 use rand_chacha::{rand_core::SeedableRng, ChaCha20Rng};
 use rand_distr::{Distribution, Normal};
-
-use crate::generator;
 
 pub struct RNG {
     rng: ChaCha20Rng,
@@ -20,6 +17,14 @@ impl RNG {
     }
 
     pub fn gen_range(&mut self, low: usize, high: usize, equal: bool) -> usize {
+        if equal {
+            self.rng.gen_range(low..=high)
+        } else {
+            self.rng.gen_range(low..high)
+        }
+    }
+
+    pub fn gen_range_i(&mut self, low: i32, high: i32, equal: bool) -> i32 {
         if equal {
             self.rng.gen_range(low..=high)
         } else {

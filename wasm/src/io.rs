@@ -9,6 +9,8 @@ impl Input {
         input! {
             from source,
         }
+
+        Ok(Self {})
     }
 }
 
@@ -20,11 +22,16 @@ impl Output {
         input! {
             from source,
         }
+        Ok(Self {})
     }
 
-    pub fn get_max_turn(&self, input: &Input) -> usize {}
+    pub fn get_max_turn(&self, input: &Input) -> usize {
+        0
+    }
 
     pub fn get_state_at_turn(&self, input: &Input, turn: usize) -> () {}
 
-    pub fn calc_score(&self, input: &Input, turn: usize) -> Result<Score, String> {}
+    pub fn calc_score(&self, input: &Input, turn: usize) -> Result<Score, String> {
+        Ok(0)
+    }
 }

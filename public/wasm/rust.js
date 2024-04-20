@@ -119,12 +119,12 @@ export function vis(input, output, turn) {
 }
 
 /**
-* @param {string} input
+* @param {string} _input
 * @param {string} output
 * @returns {number}
 */
-export function get_max_turn(input, output) {
-    const ptr0 = passStringToWasm0(input, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+export function get_max_turn(_input, output) {
+    const ptr0 = passStringToWasm0(_input, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     const ptr1 = passStringToWasm0(output, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len1 = WASM_VECTOR_LEN;
@@ -160,7 +160,7 @@ export class Ret {
     */
     get score() {
         const ret = wasm.__wbg_get_ret_score(this.__wbg_ptr);
-        return BigInt.asUintN(64, ret);
+        return ret;
     }
     /**
     * @param {bigint} arg0
