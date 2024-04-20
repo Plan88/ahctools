@@ -94,15 +94,6 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
         svg = svg.add(group);
     }
 
-    // current position
-    {
-        let mut group = element::group(format!("x:{}\ny:{}", sim.p.0, sim.p.1));
-        let (cx, cy) = (g(sim.p.0), g(sim.p.1));
-        let circle = element::circle(cx, cy, 10, "black");
-        group = group.add(circle);
-        svg = svg.add(group);
-    }
-
     // out wall
     {
         let line1 = (0, 0, 0, SVG_SIZE);
@@ -114,6 +105,29 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
         }
     }
 
+    // vector
+    let (cx, cy) = (sim.p.0, sim.p.1);
+    {
+        let (vx, vy) = (sim.v.0, sim.v.1);
+        let (dx, dy) = (cx + vx, cy + vy);
+        let line = (cx, cy, dx, dy);
+        for (lx, ly, rx, ry) in vec![line] {
+            let lx = g(lx);
+            let ly = g(ly);
+            let rx = g(rx);
+            let ry = g(ry);
+            svg = svg.add(element::line(lx, ly, rx, ry, "black").set("opacity", 0.3));
+        }
+    }
+
+    // current position
+    {
+        let mut group = element::group(format!("x:{}\ny:{}", cx.round() as i64, cy.round() as i64));
+        let circle = element::circle(g(cx), g(cy), f(-100000 + 1000), "black");
+        group = group.add(circle);
+        svg = svg.add(group);
+    }
+
     (svg.to_string(), sim.crt_score)
 }
 
@@ -121,13 +135,15 @@ fn f(x: i64) -> usize {
     let x = x as f64 + GETA;
     let r = x / MAP_SIZE;
 
-    (SVG_SIZE as f64 * r).round() as usize
+    (SVG_SIZE as f64 * r).round().clamp(0.0, SVG_SIZE as f64) as usize
+    // (SVG_SIZE as f64 * r).round() as usize
 }
 fn g(x: f64) -> usize {
     let x = x + GETA;
     let r = x / MAP_SIZE;
 
-    (SVG_SIZE as f64 * r).round() as usize
+    (SVG_SIZE as f64 * r).round().clamp(0.0, SVG_SIZE as f64) as usize
+    // (SVG_SIZE as f64 * r).round() as usize
 }
 
 fn simulate(input: &tools::Input, output: &tools::Output, turn: usize) -> tools::Sim {
