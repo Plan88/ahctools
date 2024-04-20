@@ -87,7 +87,7 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
         let color = if sim.visited[i] { "red" } else { "blue" };
         let x = f(x);
         let y = f(y);
-        let r = 3; //f(-200000 + 1000);
+        let r = f(-100000 + 1000);
         let circle = element::circle(x, y, r, color);
         group = group.add(circle);
 
