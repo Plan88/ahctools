@@ -83,11 +83,12 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
 
     // distination
     for (i, &(x, y)) in input.ps.iter().enumerate() {
-        let mut group = element::group(format!("x:{}\ny:{}", x, y));
+        let mut group = element::group(format!("i:{}\nx:{}\ny:{}", i, x, y));
         let color = if sim.visited[i] { "red" } else { "blue" };
         let x = f(x);
         let y = f(y);
-        let circle = element::circle(x, y, 3, color);
+        let r = 3; //f(-200000 + 1000);
+        let circle = element::circle(x, y, r, color);
         group = group.add(circle);
 
         svg = svg.add(group);
@@ -95,8 +96,8 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
 
     // current position
     {
+        let mut group = element::group(format!("x:{}\ny:{}", sim.p.0, sim.p.1));
         let (cx, cy) = (g(sim.p.0), g(sim.p.1));
-        let mut group = element::group(format!("x:{}\ny:{}", cx, cy));
         let circle = element::circle(cx, cy, 10, "black");
         group = group.add(circle);
         svg = svg.add(group);
