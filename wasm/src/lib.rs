@@ -83,16 +83,35 @@ fn get_svg_string(input: tools::Input, output: tools::Output, turn: usize) -> (S
 
     // distination
     for (i, &(x, y)) in input.ps.iter().enumerate() {
-        let color = if sim.visited[i] { "red" } else { "blud" };
+        let mut group = element::group(format!("x:{}\ny:{}", x, y));
+        let color = if sim.visited[i] { "red" } else { "blue" };
         let x = f(x);
         let y = f(y);
+        let circle = element::circle(x, y, 3, color);
+        group = group.add(circle);
 
-        svg = svg.add(element::circle(x, y, 3, color))
+        svg = svg.add(group);
     }
 
     // current position
-    let (cx, cy) = (g(sim.p.0), g(sim.p.1));
-    svg = svg.add(element::circle(cx, cy, 3, "black"));
+    {
+        let (cx, cy) = (g(sim.p.0), g(sim.p.1));
+        let mut group = element::group(format!("x:{}\ny:{}", cx, cy));
+        let circle = element::circle(cx, cy, 10, "black");
+        group = group.add(circle);
+        svg = svg.add(group);
+    }
+
+    // out wall
+    {
+        let line1 = (0, 0, 0, SVG_SIZE);
+        let line2 = (0, SVG_SIZE, SVG_SIZE, SVG_SIZE);
+        let line3 = (SVG_SIZE, SVG_SIZE, SVG_SIZE, 0);
+        let line4 = (SVG_SIZE, 0, 0, 0);
+        for (lx, ly, rx, ry) in vec![line1, line2, line3, line4] {
+            svg = svg.add(element::line(lx, ly, rx, ry, "black"))
+        }
+    }
 
     (svg.to_string(), sim.crt_score)
 }
